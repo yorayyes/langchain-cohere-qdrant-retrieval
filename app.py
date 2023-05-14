@@ -57,10 +57,11 @@ def retrieve_info():
     # Retrieve information from a collection
     collection_name = request.json.get("collection_name")
     query = request.json.get("query")
-    chat_history = json.loads(request.json.get("chat_history"))
+    chat_history = request.json.get("chat_history")
+    if isinstance(chat_history, str):
+        chat_history = json.loads(chat_history)
 
-    if chat_history is None:
-        chat_history = []
+    chat_history = chat_history if chat_history else []
 
     client = QdrantClient(url=qdrant_url, prefer_grpc=True, api_key=qdrant_api_key)
 
@@ -79,4 +80,6 @@ def retrieve_info():
 
     return {"results": response}
 
-if __name__ ==
+    if __name__ == '__main__':
+        app.run(host='0.0.0.0', port=5000)
+
