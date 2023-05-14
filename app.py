@@ -59,6 +59,9 @@ def retrieve_info():
     query = request.json.get("query")
     chat_history = json.loads(request.json.get("chat_history"))
 
+    if chat_history is None:
+        chat_history = []
+
     client = QdrantClient(url=qdrant_url, prefer_grpc=True, api_key=qdrant_api_key)
 
     embeddings = CohereEmbeddings(model="multilingual-22-12", cohere_api_key=cohere_api_key)
@@ -76,5 +79,4 @@ def retrieve_info():
 
     return {"results": response}
 
-if __name__ == '__main__':
-    app.run()
+if __name__ ==
