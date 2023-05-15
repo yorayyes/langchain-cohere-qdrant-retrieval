@@ -58,7 +58,7 @@ def retrieve_info():
     collection_name = request.json.get("collection_name")
     query = request.json.get("query")
     chat_history = request.json.get("chat_history")
-    if isinstance(chat_history, str) and chat_history:
+    if chat_history and isinstance(chat_history, str):  
         chat_history = json.loads(chat_history)
 
     chat_history = chat_history if chat_history else []
