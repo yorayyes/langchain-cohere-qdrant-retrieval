@@ -74,7 +74,7 @@ def retrieve_info():
     # Concatenate the chat history and the new query and search results
     messages = chat_history + [{"role": "user", "content": query}]
     for result in search_results:
-        messages.append({"role": "assistant", "content": result['text']})
+        messages.append({"role": "assistant", "content": result.text})
 
     response = openai_api.chat_completions(messages, max_tokens=100, n=1, stop=None)
 
