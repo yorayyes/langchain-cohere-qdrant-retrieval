@@ -39,7 +39,7 @@ def embed_pdf():
 
 # Create a class for OpenAI interactions
 class OpenAI:
-    def __init__(self, openai_api_key, engine="text-davinci-002", temperature=0.7):
+    def __init__(self, openai_api_key, engine="gpt-3.5-turbo", temperature=0.5):
         import openai
         self.openai = openai
         self.openai.api_key = openai_api_key
@@ -48,9 +48,12 @@ class OpenAI:
 
     # Method for generating a completion with the OpenAI model
     def chat_completions(self, messages, **kwargs):
-        prompt = "\n".join([f"{msg['role']}: {msg['content']}" for msg in messages])
-        completions = self.openai.Completion.create(engine=self.engine, prompt=prompt, **kwargs)
-        return completions.choices[0].text.strip()
+        response = self.openai.ChatCompletion.create(
+            model=self.engine,
+            messages=messages,
+            **kwargs
+        )
+        return response['choices'][0]['message']['content']
 
 @app.route('/retrieve', methods=['POST'])
 def retrieve_info():
@@ -80,6 +83,6 @@ def retrieve_info():
 
     return {"results": response}
 
-    if __name__ == '__main__':
-        app.run(host='0.0.0.0', port=5000)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
 
