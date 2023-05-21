@@ -72,17 +72,23 @@ def retrieve_info():
     qdrant = Qdrant(client=client, collection_name=collection_name, embedding_function=embeddings.embed_query)
     search_results = qdrant.similarity_search(query, k=2)
 
-    openai_api = OpenAI(openai_api_key=openai_api_key, temperature=0.2)
+    openai_api = OpenAI(openai_api_key=openai_api_key, temperature=0.7)
     
-    # Concatenate the chat history and the new query and search results
-    messages = chat_history + [{"role": "user", "content": query}]
-    for result in search_results:
-        messages.append({"role": "assistant", "content": result.page_content})
+    # Start with the system message
+messages = [{"role": "system", "content": "You are a friendly, empathetic and helpful mental health coach. Use the content found in the assistant messages to help you generate useful answers when addressing the users content. If it is not helpful or relevant you can disregard it."}]
 
-    # Add the system message```python
-    messages.append({"role": "system", "content": "You are a helpful mental health coach. Use the content found in the assistant messages to help you generate useful answers to answer the users questions. If it is not helpful or relevant you can disregard it."})
+# Add chat history if it exists
+if chat_history:
+    messages.extend(chat_history)
 
-    response = openai_api.chat_completions(messages, max_tokens=100, n=1, stop=None)
+# Add the user's message
+messages.append({"role": "user", "content": query})
+
+# Add the assistant messages
+for result in search_results:
+    messages.append({"role": "assistant", "content": result.page_content})
+
+response = openai_api.chat_completions(messages, max_tokens=100, n=1, stop=None)
 
     return {"results": response}
 
