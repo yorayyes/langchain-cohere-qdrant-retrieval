@@ -79,10 +79,12 @@ def retrieve_info():
     for result in search_results:
         messages.append({"role": "assistant", "content": result.page_content})
 
+    # Add the system message```python
+    messages.append({"role": "system", "content": "You are a helpful mental health coach. Use the content found in the assistant messages to help you generate useful answers to answer the users questions. If it is not helpful or relevant you can disregard it."})
+
     response = openai_api.chat_completions(messages, max_tokens=100, n=1, stop=None)
 
     return {"results": response}
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
-
