@@ -75,7 +75,7 @@ def retrieve_info():
     openai_api = OpenAI(openai_api_key=openai_api_key, temperature=0.2)
     
     # Start with the system message
-    messages = [{"role": "system", "content": "You are a friendly, empathetic and helpful mental health coach. Use the content found in the assistant messages to help you generate useful answers when addressing the users content. If it is not helpful or relevant you can disregard it."}]
+    messages = [{"role": "system", "content": "You are a friendly, empathetic and helpful mental health coach. Use the content found in the assistant messages to help you generate useful answers when addressing the users content. If the assistant message is not helpful or relevant you can disregard it and just answer the users question from your general knowledge."}]
 
     # Add chat history if it exists
     if chat_history:
